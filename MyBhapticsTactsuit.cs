@@ -132,10 +132,10 @@ namespace MyBhapticsTactsuit
             string postfix = "_L";
             string otherPostfix = "_R";
             if (isRightHand) { postfix = "_R"; otherPostfix = "_L"; }
-            string keyArm = "Recoil" + postfix;
+            string keyArm = "RecoilArms" + postfix;
             string keyVest = "RecoilVest" + postfix;
             string keyHands = "RecoilHands" + postfix;
-            string keyArmOther = "Recoil" + otherPostfix;
+            string keyArmOther = "RecoilArms" + otherPostfix;
             string keyHandsOther = "RecoilHands" + otherPostfix;
             bHapticsLib.bHapticsManager.PlayRegistered(keyHands, keyHands, scaleOption, rotationFront);
             bHapticsLib.bHapticsManager.PlayRegistered(keyArm, keyArm, scaleOption, rotationFront);
@@ -147,47 +147,34 @@ namespace MyBhapticsTactsuit
             }
         }
 
-        public void MeatNailerRecoil(bool isRightHand, float intensity = 1.0f, bool twoHanded = false)
+        public void CastSpell(bool isRightHand, float intensity = 1.0f)
         {
             float duration = 1.0f;
             var scaleOption = new bHapticsLib.ScaleOption(intensity, duration);
             var rotationFront = new bHapticsLib.RotationOption(0f, 0f);
             string postfix = "_L";
-            string otherPostfix = "_R";
-            if (isRightHand) { postfix = "_R"; otherPostfix = "_L"; }
-            string keyArm = "Recoil" + postfix;
-            string keyVest = "MeatNailerVest" + postfix;
-            string keyHands = "RecoilHands" + postfix;
-            string keyArmOther = "Recoil" + otherPostfix;
-            string keyHandsOther = "RecoilHands" + otherPostfix;
-            bHapticsLib.bHapticsManager.PlayRegistered(keyHands, keyHands, scaleOption, rotationFront);
+            if (isRightHand) { postfix = "_R"; }
+
+            string keyHand = "SpellHand" + postfix;
+            string keyArm = "SpellArm" + postfix;
+            string keyVest = "SpellVest" + postfix;
+            bHapticsLib.bHapticsManager.PlayRegistered(keyHand, keyHand, scaleOption, rotationFront);
             bHapticsLib.bHapticsManager.PlayRegistered(keyArm, keyArm, scaleOption, rotationFront);
             bHapticsLib.bHapticsManager.PlayRegistered(keyVest, keyVest, scaleOption, rotationFront);
-            if (twoHanded)
-            {
-                bHapticsLib.bHapticsManager.PlayRegistered(keyHandsOther, keyHandsOther, scaleOption, rotationFront);
-                bHapticsLib.bHapticsManager.PlayRegistered(keyArmOther, keyArmOther, scaleOption, rotationFront);
-            }
         }
 
-        public void EnlightenRecoil(bool isRightHand, float intensity = 1.0f, bool twoHanded = false)
+        public void ShootBow(bool isRightHand, float intensity = 1.0f)
         {
             float duration = 1.0f;
             var scaleOption = new bHapticsLib.ScaleOption(intensity, duration);
             var rotationFront = new bHapticsLib.RotationOption(0f, 0f);
             string postfix = "_L";
-            string otherPostfix = "_R";
-            if (isRightHand) { postfix = "_R"; otherPostfix = "_L"; }
-            string keyArm = "EnlightenGunArm" + postfix;
-            string keyVest = "EnlightenGunVest" + postfix;
-            string keyArmOther = "EnlightenGunArm" + otherPostfix;
-            bHapticsLib.bHapticsManager.PlayRegistered(keyArm, keyArm, scaleOption, rotationFront);
+            if (isRightHand) { postfix = "_R"; }
+
+            string keyVest = "ShootBowVest" + postfix;
             bHapticsLib.bHapticsManager.PlayRegistered(keyVest, keyVest, scaleOption, rotationFront);
-            if (twoHanded)
-            {
-                bHapticsLib.bHapticsManager.PlayRegistered(keyArmOther, keyArmOther, scaleOption, rotationFront);
-            }
         }
+
 
         public void SwordRecoil(bool isRightHand, float intensity = 1.0f)
         {
@@ -196,7 +183,7 @@ namespace MyBhapticsTactsuit
             var rotationFront = new bHapticsLib.RotationOption(0f, 0f);
             string postfix = "_L";
             if (isRightHand) { postfix = "_R"; }
-            string keyArm = "Sword" + postfix;
+            string keyArm = "SwordArms" + postfix;
             string keyVest = "SwordVest" + postfix;
             string keyHands = "RecoilHands" + postfix;
             bHapticsLib.bHapticsManager.PlayRegistered(keyHands, keyHands, scaleOption, rotationFront);

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +18,7 @@ namespace MyBhapticsTactsuit
         private static ManualResetEvent HeartBeat_mrse = new ManualResetEvent(false);
         private static ManualResetEvent Water_mrse = new ManualResetEvent(false);
         private static ManualResetEvent Choking_mrse = new ManualResetEvent(false);
-        public Dictionary<String, FileInfo> FeedbackMap = new Dictionary<String, FileInfo>();
+        public Dictionary<String, String> FeedbackMap = new Dictionary<String, String>();
 
         private static bHapticsLib.RotationOption defaultRotationOption = new bHapticsLib.RotationOption(0.0f, 0.0f);
 
@@ -71,11 +74,31 @@ namespace MyBhapticsTactsuit
             MelonLogger.Msg(logStr);
         }
 
+        void RegisterInternally(string configPath)
+        {
+            LOG("Patterns folder not found: " + configPath);
+            LOG("Using internal patterns");
+            ResourceSet resourceSet = TheLightBrigade_bhaptics.Properties.Resource1.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, true);
 
+            foreach (DictionaryEntry d in resourceSet)
+            {
+                try
+                {
+                    bHapticsLib.bHapticsManager.RegisterPatternFromJson(d.Key.ToString(), d.Value.ToString());
+                    LOG("Pattern registered: " + d.Key.ToString());
+                }
+                catch (Exception e) { LOG(e.ToString()); }
+
+                FeedbackMap.Add(d.Key.ToString(), d.Value.ToString());
+            }
+
+            systemInitialized = true;
+        }
 
         void RegisterAllTactFiles()
         {
             string configPath = Directory.GetCurrentDirectory() + "\\Mods\\bHaptics";
+            if (!Directory.Exists(configPath)) { RegisterInternally(configPath); return; }
             DirectoryInfo d = new DirectoryInfo(configPath);
             FileInfo[] Files = d.GetFiles("*.tact", SearchOption.AllDirectories);
             for (int i = 0; i < Files.Length; i++)
@@ -94,7 +117,7 @@ namespace MyBhapticsTactsuit
                 }
                 catch (Exception e) { LOG(e.ToString()); }
 
-                FeedbackMap.Add(prefix, Files[i]);
+                FeedbackMap.Add(prefix, Files[i].FullName);
             }
             systemInitialized = true;
             //PlaybackHaptics("HeartBeat");

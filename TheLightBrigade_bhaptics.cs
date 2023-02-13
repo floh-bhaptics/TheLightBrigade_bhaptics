@@ -26,47 +26,7 @@ namespace TheLightBrigade_bhaptics
             tactsuitVr.PlaybackHaptics("HeartBeat");
         }
 
-        [HarmonyPatch(typeof(PlayerActor), "DoDeath", new Type[] { typeof(DeathEntry) })]
-        public class bhaptics_PlayerDies
-        {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                tactsuitVr.StopThreads();
-            }
-        }
-
-        /*
-        [HarmonyPatch(typeof(JuiceVolume), "FadeIn", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float) })]
-        public class bhaptics_LowHealthVignetteOn
-        {
-            [HarmonyPostfix]
-            public static void Postfix(JuiceVolume.JuiceLayerName layerName)
-            {
-                if (layerName == JuiceVolume.JuiceLayerName.LowHealth) tactsuitVr.StartHeartBeat();
-            }
-        }
-
-        [HarmonyPatch(typeof(JuiceVolume), "FadeOut", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float) })]
-        public class bhaptics_LowHealthVignetteOff
-        {
-            [HarmonyPostfix]
-            public static void Postfix(JuiceVolume.JuiceLayerName layerName)
-            {
-                if (layerName == JuiceVolume.JuiceLayerName.LowHealth) tactsuitVr.StopHeartBeat();
-            }
-        }
-
-        [HarmonyPatch(typeof(JuiceVolume), "FadeOutAll", new Type[] { typeof(float) })]
-        public class bhaptics_AllVignetteOff
-        {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                tactsuitVr.StopThreads();
-            }
-        }
-        */
+        #region Weapons
 
         [HarmonyPatch(typeof(Weapon_Rifle), "TryFire", new Type[] {  })]
         public class bhaptics_RifleFire
@@ -119,6 +79,10 @@ namespace TheLightBrigade_bhaptics
                 tactsuitVr.SwordRecoil(true, speed/10.0f);
             }
         }
+
+        #endregion
+
+        #region Damage and Health
 
         private static (float, float) getAngleAndShift(Transform player, Vector3 hitPoint)
         {
@@ -192,6 +156,10 @@ namespace TheLightBrigade_bhaptics
             }
         }
 
+        #endregion
+
+        #region Extra effects
+
         [HarmonyPatch(typeof(HipAndFootIK), "OnFootTouchedGround", new Type[] { typeof(int), typeof(Vector3), typeof(Vector3) })]
         public class bhaptics_FootStep
         {
@@ -224,5 +192,6 @@ namespace TheLightBrigade_bhaptics
             }
         }
 
+        #endregion
     }
 }

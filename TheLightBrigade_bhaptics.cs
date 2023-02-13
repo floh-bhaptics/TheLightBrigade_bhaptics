@@ -103,7 +103,7 @@ namespace TheLightBrigade_bhaptics
             float hitShift = hitPosition.y;
             tactsuitVr.LOG("Hitshift: " + hitShift.ToString());
             float upperBound = 1.7f;
-            float lowerBound = 1.3f;
+            float lowerBound = 1.2f;
             if (hitShift > upperBound) { hitShift = 0.5f; }
             else if (hitShift < lowerBound) { hitShift = -0.5f; }
             // ...and then spread/shift it to [-0.5, 0.5], which is how bhaptics expects it
@@ -118,7 +118,7 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(PlayerActor __instance, ProjectileHitInfo info, ProjectileService.DamageResult damageResult)
             {
-                if (__instance.health <= 0.25f * __instance.maxHealth) tactsuitVr.StartHeartBeat();
+                if (__instance.health <= Services.gameSettings.PlayerLowHealthRatio * __instance.maxHealth) tactsuitVr.StartHeartBeat();
                 else tactsuitVr.StopHeartBeat();
                 float hitAngle;
                 float hitShift;
@@ -148,6 +148,16 @@ namespace TheLightBrigade_bhaptics
 
         [HarmonyPatch(typeof(PlayerActor), "DoDeath", new Type[] { typeof(DeathEntry) })]
         public class bhaptics_PlayerDeath
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                tactsuitVr.StopThreads();
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerActor), "OnDamageDeath", new Type[] { typeof(ProjectileHitInfo), typeof(ProjectileService.DamageResult) })]
+        public class bhaptics_PlayerDeathDamage
         {
             [HarmonyPostfix]
             public static void Postfix()

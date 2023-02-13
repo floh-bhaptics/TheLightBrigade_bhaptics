@@ -34,9 +34,9 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
             {
-                if (___boltOpenState) { tactsuitVr.LOG("Bolt open"); return; }
-                if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { tactsuitVr.LOG("Hammer time!"); return; }
-                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { tactsuitVr.LOG("Chamber empty"); return; }
+                if (___boltOpenState) { return; }
+                //if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) {  return; }
+                //if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) {  return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
                 //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
@@ -101,7 +101,7 @@ namespace TheLightBrigade_bhaptics
             if (myRotation < 0f) { myRotation = 360f + myRotation; }
 
             float hitShift = hitPosition.y;
-            tactsuitVr.LOG("Hitshift: " + hitShift.ToString());
+            //tactsuitVr.LOG("Hitshift: " + hitShift.ToString());
             float upperBound = 1.7f;
             float lowerBound = 1.2f;
             if (hitShift > upperBound) { hitShift = 0.5f; }

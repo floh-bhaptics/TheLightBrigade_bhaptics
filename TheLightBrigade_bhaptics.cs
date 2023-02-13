@@ -8,6 +8,7 @@ using HarmonyLib;
 using MyBhapticsTactsuit;
 using LB;
 using UnityEngine;
+using Unity.Mathematics;
 
 [assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.0", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
@@ -35,6 +36,7 @@ namespace TheLightBrigade_bhaptics
             }
         }
 
+        /*
         [HarmonyPatch(typeof(JuiceVolume), "FadeIn", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float) })]
         public class bhaptics_LowHealthVignetteOn
         {
@@ -64,6 +66,7 @@ namespace TheLightBrigade_bhaptics
                 tactsuitVr.StopThreads();
             }
         }
+        */
 
         [HarmonyPatch(typeof(Weapon_Rifle), "TryFire", new Type[] {  })]
         public class bhaptics_RifleFire
@@ -71,16 +74,14 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
             {
-                if (
-                    (___boltOpenState) ||
-                    ((double)Time.time < (double)___nextShot) ||
-                    ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) ||
-                    ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent)
-                    ) return;
+                if (___boltOpenState) { tactsuitVr.LOG("Bolt open"); return; }
+                if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { tactsuitVr.LOG("Hammer time!"); return; }
+                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { tactsuitVr.LOG("Chamber empty"); return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
-                if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
-                //bool twoHanded = __instance.grabTrigger.alternateGrabAlso;
+                //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
+                //twoHanded = __instance.grabTrigger.alternateGrabAlso;
+                twoHanded = ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null);
                 tactsuitVr.GunRecoil(isRight, 1.0f, twoHanded);
             }
         }
@@ -132,13 +133,17 @@ namespace TheLightBrigade_bhaptics
             Vector3 earlycrossProduct = Vector3.Cross(flattenedHit, patternOrigin);
             if (earlycrossProduct.y > 0f) { earlyhitAngle *= -1f; }
             float myRotation = earlyhitAngle - playerDir.y;
-            myRotation *= -1f;
+            //myRotation *= -1f;
             if (myRotation < 0f) { myRotation = 360f + myRotation; }
 
             float hitShift = hitPosition.y;
-            if (hitShift > 0.0f) { hitShift = 0.5f; }
-            else if (hitShift < -0.5f) { hitShift = -0.5f; }
-            else { hitShift = (hitShift + 0.25f) * 2.0f; }
+            tactsuitVr.LOG("Hitshift: " + hitShift.ToString());
+            float upperBound = 1.7f;
+            float lowerBound = 1.3f;
+            if (hitShift > upperBound) { hitShift = 0.5f; }
+            else if (hitShift < lowerBound) { hitShift = -0.5f; }
+            // ...and then spread/shift it to [-0.5, 0.5], which is how bhaptics expects it
+            else { hitShift = (hitShift - lowerBound) / (upperBound - lowerBound) - 0.5f; }
 
             return (myRotation, hitShift);
         }
@@ -149,6 +154,8 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(PlayerActor __instance, ProjectileHitInfo info, ProjectileService.DamageResult damageResult)
             {
+                if (__instance.health <= 0.25f * __instance.maxHealth) tactsuitVr.StartHeartBeat();
+                else tactsuitVr.StopHeartBeat();
                 float hitAngle;
                 float hitShift;
                 string damageType = "BulletHit";
@@ -161,6 +168,27 @@ namespace TheLightBrigade_bhaptics
                 (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition);
                 if (hitShift >= 0.5f) { tactsuitVr.HeadShot(hitAngle); return; }
                 tactsuitVr.PlayBackHit(damageType, hitAngle, hitShift);
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerActor), "UpdateLowHealthState", new Type[] {  })]
+        public class bhaptics_PlayerHealth
+        {
+            [HarmonyPostfix]
+            public static void Postfix(PlayerActor __instance)
+            {
+                if (__instance.health <= 0.25f * __instance.maxHealth) tactsuitVr.StartHeartBeat();
+                else tactsuitVr.StopHeartBeat();
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerActor), "DoDeath", new Type[] { typeof(DeathEntry) })]
+        public class bhaptics_PlayerDeath
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                tactsuitVr.StopThreads();
             }
         }
 
@@ -179,18 +207,22 @@ namespace TheLightBrigade_bhaptics
         public class bhaptics_Prayer
         {
             [HarmonyPostfix]
-            public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName)
+            public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName, float fadeInSecs, float holdDurationSecs, float fadeOutSecs)
             {
+                if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport) tactsuitVr.PlaybackHaptics("Teleport");
+                if (layerName == JuiceVolume.JuiceLayerName.AbsorbSoul) tactsuitVr.PlaybackHaptics("AbsorbSoul");
+                if (layerName == JuiceVolume.JuiceLayerName.LevelUp) tactsuitVr.PlaybackHaptics("LevelUp");
+                if (layerName == JuiceVolume.JuiceLayerName.AbsorbTarotCard) tactsuitVr.PlaybackHaptics("AbsorbTarotCard");
                 if (layerName == JuiceVolume.JuiceLayerName.Prayer)
                 {
+                    if ((fadeInSecs == 0.1f) && (fadeOutSecs == 0.3f)) return;
+                    //tactsuitVr.LOG("Numbers: " + fadeInSecs + " " + holdDurationSecs + " " + fadeOutSecs);
                     tactsuitVr.PlaybackHaptics("PrayerHands");
                     tactsuitVr.PlaybackHaptics("PrayerArms");
                     tactsuitVr.PlaybackHaptics("PrayerVest");
                 }
             }
         }
-
-
 
     }
 }

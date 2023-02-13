@@ -87,6 +87,7 @@
   <ItemGroup>
     <None Include="bHaptics\AbsorbSoul.tact" />
     <None Include="bHaptics\AbsorbTarotCard.tact" />
+    <None Include="bHaptics\AreaClear.tact" />
     <None Include="bHaptics\BellyRumble.tact" />
     <None Include="bHaptics\BladeHit.tact" />
     <None Include="bHaptics\BulletHit.tact" />

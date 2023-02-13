@@ -46,7 +46,7 @@ namespace TheLightBrigade_bhaptics
             }
         }
 
-        [HarmonyPatch(typeof(Weapon_Wand), "OnHeldTriggerPress", new Type[] { typeof(XRController) })]
+        [HarmonyPatch(typeof(Weapon_Wand), "OnHeldTriggerRelease", new Type[] { typeof(XRController) })]
         public class bhaptics_CastSpell
         {
             [HarmonyPostfix]
@@ -97,7 +97,7 @@ namespace TheLightBrigade_bhaptics
             Vector3 earlycrossProduct = Vector3.Cross(flattenedHit, patternOrigin);
             if (earlycrossProduct.y > 0f) { earlyhitAngle *= -1f; }
             float myRotation = earlyhitAngle - playerDir.y;
-            //myRotation *= -1f;
+            myRotation *= -1f;
             if (myRotation < 0f) { myRotation = 360f + myRotation; }
 
             float hitShift = hitPosition.y;
@@ -189,6 +189,26 @@ namespace TheLightBrigade_bhaptics
                     tactsuitVr.PlaybackHaptics("PrayerArms");
                     tactsuitVr.PlaybackHaptics("PrayerVest");
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(JuiceVolume), "TriggerAreaClearRingBurst", new Type[] {  })]
+        public class bhaptics_AreaClear
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                tactsuitVr.PlaybackHaptics("AreaClear");
+            }
+        }
+
+        [HarmonyPatch(typeof(JuiceVolume), "FadeOut", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float) })]
+        public class bhaptics_FadeInLayer
+        {
+            [HarmonyPostfix]
+            public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName)
+            {
+                if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport) tactsuitVr.PlaybackHaptics("Teleport");
             }
         }
 

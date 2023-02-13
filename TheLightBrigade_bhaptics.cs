@@ -118,5 +118,79 @@ namespace TheLightBrigade_bhaptics
                 tactsuitVr.SwordRecoil(true, speed/10.0f);
             }
         }
+
+        private static (float, float) getAngleAndShift(Transform player, Vector3 hitPoint)
+        {
+            Vector3 patternOrigin = new Vector3(0f, 0f, 1f);
+            // y is "up", z is "forward" in local coordinates
+            Vector3 hitPosition = hitPoint - player.position;
+            Quaternion PlayerRotation = player.rotation;
+            Vector3 playerDir = PlayerRotation.eulerAngles;
+            // We only want rotation correction in y direction (left-right), top-bottom and yaw we can leave
+            Vector3 flattenedHit = new Vector3(hitPosition.x, 0f, hitPosition.z);
+            float earlyhitAngle = Vector3.Angle(flattenedHit, patternOrigin);
+            Vector3 earlycrossProduct = Vector3.Cross(flattenedHit, patternOrigin);
+            if (earlycrossProduct.y > 0f) { earlyhitAngle *= -1f; }
+            float myRotation = earlyhitAngle - playerDir.y;
+            myRotation *= -1f;
+            if (myRotation < 0f) { myRotation = 360f + myRotation; }
+
+            float hitShift = hitPosition.y;
+            if (hitShift > 0.0f) { hitShift = 0.5f; }
+            else if (hitShift < -0.5f) { hitShift = -0.5f; }
+            else { hitShift = (hitShift + 0.25f) * 2.0f; }
+
+            return (myRotation, hitShift);
+        }
+
+        [HarmonyPatch(typeof(PlayerActor), "OnDamageApply", new Type[] { typeof(ProjectileHitInfo), typeof(ProjectileService.DamageResult) })]
+        public class bhaptics_PlayerHit
+        {
+            [HarmonyPostfix]
+            public static void Postfix(PlayerActor __instance, ProjectileHitInfo info, ProjectileService.DamageResult damageResult)
+            {
+                float hitAngle;
+                float hitShift;
+                string damageType = "BulletHit";
+                if (info.damageData.instantKill) damageType = "Impact";
+                if (info.damageData.isExplodingShot) damageType = "Impact";
+                if ((info.damageData.isExplosion)||(info.damageData.isGrenade)) damageType = "Impact";
+                if (info.damageData.isMelee) damageType = "BladeHit";
+                if (info.damageData.isPoison) damageType = "Poison";
+                if (info.damageData.isSpell) damageType = "Impact";
+                (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition);
+                if (hitShift >= 0.5f) { tactsuitVr.HeadShot(hitAngle); return; }
+                tactsuitVr.PlayBackHit(damageType, hitAngle, hitShift);
+            }
+        }
+
+        [HarmonyPatch(typeof(HipAndFootIK), "OnFootTouchedGround", new Type[] { typeof(int), typeof(Vector3), typeof(Vector3) })]
+        public class bhaptics_FootStep
+        {
+            [HarmonyPostfix]
+            public static void Postfix(int index)
+            {
+                if (index == 0) tactsuitVr.PlaybackHaptics("FootStep_L");
+                else tactsuitVr.PlaybackHaptics("FootStep_R");
+            }
+        }
+
+        [HarmonyPatch(typeof(JuiceVolume), "FlashSettings", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float), typeof(float) })]
+        public class bhaptics_Prayer
+        {
+            [HarmonyPostfix]
+            public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName)
+            {
+                if (layerName == JuiceVolume.JuiceLayerName.Prayer)
+                {
+                    tactsuitVr.PlaybackHaptics("PrayerHands");
+                    tactsuitVr.PlaybackHaptics("PrayerArms");
+                    tactsuitVr.PlaybackHaptics("PrayerVest");
+                }
+            }
+        }
+
+
+
     }
 }

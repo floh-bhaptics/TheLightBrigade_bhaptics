@@ -19,6 +19,8 @@ namespace TheLightBrigade_bhaptics
     public class TheLightBrigade_bhaptics: MelonMod
     {
         public static TactsuitVR tactsuitVr;
+        public static bool rightFoot = true;
+        public static float footSteps = 0;
 
         public override void OnInitializeMelon()
         {
@@ -41,7 +43,7 @@ namespace TheLightBrigade_bhaptics
                 bool twoHanded = false;
                 //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
                 //twoHanded = __instance.grabTrigger.alternateGrabAlso;
-                twoHanded = ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null);
+                twoHanded = (__instance.grabBarrel != null);
                 tactsuitVr.GunRecoil(isRight, 1.0f, twoHanded);
             }
         }
@@ -132,6 +134,7 @@ namespace TheLightBrigade_bhaptics
                 (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition);
                 if (hitShift >= 0.5f) { tactsuitVr.HeadShot(hitAngle); return; }
                 tactsuitVr.PlayBackHit(damageType, hitAngle, hitShift);
+                footSteps = 0;
             }
         }
 
@@ -141,7 +144,7 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(PlayerActor __instance)
             {
-                if (__instance.health <= 0.25f * __instance.maxHealth) tactsuitVr.StartHeartBeat();
+                if (__instance.health < 0.25f * __instance.maxHealth) tactsuitVr.StartHeartBeat();
                 else tactsuitVr.StopHeartBeat();
             }
         }
@@ -153,6 +156,7 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix()
             {
                 tactsuitVr.StopThreads();
+                footSteps = 0;
             }
         }
 
@@ -170,16 +174,18 @@ namespace TheLightBrigade_bhaptics
 
         #region Extra effects
 
-        [HarmonyPatch(typeof(HipAndFootIK), "OnFootTouchedGround", new Type[] { typeof(int), typeof(Vector3), typeof(Vector3) })]
+        /*
+        [HarmonyPatch("LB.FootstepPlayer:PlayFootstep")]
         public class bhaptics_FootStep
         {
             [HarmonyPostfix]
-            public static void Postfix(int index)
+            public static void Postfix()
             {
-                if (index == 0) tactsuitVr.PlaybackHaptics("FootStep_L");
-                else tactsuitVr.PlaybackHaptics("FootStep_R");
+                tactsuitVr.FootStep(rightFoot);
+                rightFoot = !rightFoot;
             }
         }
+        */
 
         [HarmonyPatch(typeof(JuiceVolume), "FlashSettings", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float), typeof(float) })]
         public class bhaptics_Prayer
@@ -218,7 +224,11 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName)
             {
-                if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport) tactsuitVr.PlaybackHaptics("Teleport");
+                if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport)
+                {
+                    tactsuitVr.PlaybackHaptics("Teleport");
+                    footSteps = 0;
+                }
             }
         }
 

@@ -10,7 +10,7 @@ using LB;
 using UnityEngine;
 using Unity.Mathematics;
 
-[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.1", "Florian Fahrenberger")]
+[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.2", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
 
 

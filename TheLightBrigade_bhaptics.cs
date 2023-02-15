@@ -33,12 +33,14 @@ namespace TheLightBrigade_bhaptics
         [HarmonyPatch(typeof(Weapon_Rifle), "TryFire", new Type[] {  })]
         public class bhaptics_RifleFire
         {
-            [HarmonyPostfix]
-            public static void Postfix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
+            [HarmonyPrefix]
+            public static void Prefix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
             {
-                if (___boltOpenState) { return; }
-                //if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) {  return; }
-                //if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) {  return; }
+                tactsuitVr.LOG("Fire: " + __instance.TypeOfWeapon.ToString());
+                if (___boltOpenState) { tactsuitVr.LOG("BoltOpen"); return; }
+                if (__instance.TypeOfWeapon != WeaponType.Pistol)
+                    if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { tactsuitVr.LOG("Hammer"); return; }
+                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { tactsuitVr.LOG("Chamber"); return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
                 //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
@@ -122,6 +124,7 @@ namespace TheLightBrigade_bhaptics
             {
                 if (__instance.health <= Services.gameSettings.PlayerLowHealthRatio * __instance.maxHealth) tactsuitVr.StartHeartBeat();
                 else tactsuitVr.StopHeartBeat();
+                //Quaternion headRotation = __instance.headRotation();
                 float hitAngle;
                 float hitShift;
                 string damageType = "BulletHit";

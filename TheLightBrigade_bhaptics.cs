@@ -36,11 +36,10 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPrefix]
             public static void Prefix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
             {
-                tactsuitVr.LOG("Fire: " + __instance.TypeOfWeapon.ToString());
-                if (___boltOpenState) { tactsuitVr.LOG("BoltOpen"); return; }
+                if (___boltOpenState) { return; }
                 if (__instance.TypeOfWeapon != WeaponType.Pistol)
-                    if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { tactsuitVr.LOG("Hammer"); return; }
-                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { tactsuitVr.LOG("Chamber"); return; }
+                    if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { return; }
+                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
                 //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;

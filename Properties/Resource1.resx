@@ -205,6 +205,12 @@
   <data name="RecoilVest_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bHaptics\RecoilVest_R.tact;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="RifleReceive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bHaptics\RifleReceive.tact;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="RifleStore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bHaptics\RifleStore.tact;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="ShootBowVest_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bHaptics\ShootBowVest_L.tact;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

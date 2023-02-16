@@ -322,6 +322,24 @@ namespace TheLightBrigade_bhaptics.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;RifleReceive&quot;,&quot;id&quot;:&quot;nzt3IdJyJ58bsvgc8FeU&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:439,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[{&quot;startTime&quot;:0,&quot;endTime&quot;:439,&quot;playbackType&quot;:&quot;NONE&quot;,&quot;pointList&quot;:[]}]},&quot;pathMode&quot;:{&quot;feedback&quot;:[]},&quot;mo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RifleReceive {
+            get {
+                return ResourceManager.GetString("RifleReceive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;RifleStore&quot;,&quot;id&quot;:&quot;aGk2uai49F6kw3ts0Fnr&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:439,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[{&quot;startTime&quot;:0,&quot;endTime&quot;:439,&quot;playbackType&quot;:&quot;NONE&quot;,&quot;pointList&quot;:[]}]},&quot;pathMode&quot;:{&quot;feedback&quot;:[]},&quot;mode [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RifleStore {
+            get {
+                return ResourceManager.GetString("RifleStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;createdAt&quot;:1637413732351,&quot;description&quot;:&quot;&quot;,&quot;id&quot;:&quot;&quot;,&quot;layout&quot;:{&quot;layouts&quot;:{&quot;VestBack&quot;:[{&quot;index&quot;:0,&quot;x&quot;:0,&quot;y&quot;:0},{&quot;index&quot;:1,&quot;x&quot;:0.333,&quot;y&quot;:0},{&quot;index&quot;:2,&quot;x&quot;:0.667,&quot;y&quot;:0},{&quot;index&quot;:3,&quot;x&quot;:1,&quot;y&quot;:0},{&quot;index&quot;:4,&quot;x&quot;:0,&quot;y&quot;:0.25},{&quot;index&quot;:5,&quot;x&quot;:0.333,&quot;y&quot;:0.25},{&quot;index&quot;:6,&quot;x&quot;:0.667,&quot;y&quot;:0.25},{&quot;index&quot;:7,&quot;x&quot;:1,&quot;y&quot;:0.25},{&quot;index&quot;:8,&quot;x&quot;:0,&quot;y&quot;:0.5},{&quot;index&quot;:9,&quot;x&quot;:0.333,&quot;y&quot;:0.5},{&quot;index&quot;:10,&quot;x&quot;:0.667,&quot;y&quot;:0.5},{&quot;index&quot;:11,&quot;x&quot;:1,&quot;y&quot;:0.5},{&quot;index&quot;:12,&quot;x&quot;:0,&quot;y&quot;:0.75},{&quot;index&quot;:13,&quot;x&quot;:0.333,&quot;y&quot;:0.75},{&quot;index&quot;:14....
         /// </summary>
         internal static string ShootBowVest_L {

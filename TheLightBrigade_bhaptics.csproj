@@ -114,6 +114,8 @@
     <None Include="bHaptics\RecoilHands_R.tact" />
     <None Include="bHaptics\RecoilVest_L.tact" />
     <None Include="bHaptics\RecoilVest_R.tact" />
+    <None Include="bHaptics\RifleReceive.tact" />
+    <None Include="bHaptics\RifleStore.tact" />
     <None Include="bHaptics\ShootBowVest_L.tact" />
     <None Include="bHaptics\ShootBowVest_R.tact" />
     <None Include="bHaptics\SpellArm_L.tact" />

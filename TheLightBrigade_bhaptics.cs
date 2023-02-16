@@ -10,7 +10,7 @@ using LB;
 using UnityEngine;
 using Unity.Mathematics;
 
-[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.3", "Florian Fahrenberger")]
+[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.4", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
 
 
@@ -82,6 +82,26 @@ namespace TheLightBrigade_bhaptics
                 float speed = collision.relativeVelocity.magnitude;
                 tactsuitVr.LOG("Sword speed: " + speed.ToString());
                 tactsuitVr.SwordRecoil(true, speed/10.0f);
+            }
+        }
+
+        [HarmonyPatch(typeof(InventorySlot), "OnStoreItemFX", new Type[] {  })]
+        public class bhaptics_StoreInventory
+        {
+            [HarmonyPostfix]
+            public static void Postfix(InventorySlot __instance)
+            {
+                if (__instance.inventorySlotType == InventorySlotType.Rifle) tactsuitVr.PlaybackHaptics("RifleStore");
+            }
+        }
+
+        [HarmonyPatch(typeof(InventorySlot), "OnUnstoreItemFX", new Type[] { })]
+        public class bhaptics_ReceiveInventory
+        {
+            [HarmonyPostfix]
+            public static void Postfix(InventorySlot __instance)
+            {
+                if (__instance.inventorySlotType == InventorySlotType.Rifle) tactsuitVr.PlaybackHaptics("RifleReceive");
             }
         }
 

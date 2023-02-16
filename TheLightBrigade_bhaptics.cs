@@ -20,7 +20,6 @@ namespace TheLightBrigade_bhaptics
     {
         public static TactsuitVR tactsuitVr;
         public static bool rightFoot = true;
-        public static float footSteps = 0;
         public static bool rightHanded = true;
 
         public override void OnInitializeMelon()
@@ -178,7 +177,6 @@ namespace TheLightBrigade_bhaptics
                 (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition);
                 if (hitShift >= 0.5f) { tactsuitVr.HeadShot(hitAngle); return; }
                 tactsuitVr.PlayBackHit(damageType, hitAngle, hitShift);
-                footSteps = 0;
             }
         }
 
@@ -200,7 +198,6 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix()
             {
                 tactsuitVr.StopThreads();
-                footSteps = 0;
             }
         }
 
@@ -228,18 +225,27 @@ namespace TheLightBrigade_bhaptics
 
         #region Extra effects
 
-        /*
-        [HarmonyPatch("LB.FootstepPlayer:PlayFootstep")]
-        public class bhaptics_FootStep
+        
+        [HarmonyPatch(typeof(Locomotion_Slide), "Update", new Type[] {  })]
+        public class bhaptics_FootStepSlide
         {
             [HarmonyPostfix]
-            public static void Postfix()
+            public static void Postfix(Locomotion_Slide __instance, float3 ___prevStepPosFlattened)
             {
-                tactsuitVr.FootStep(rightFoot);
-                rightFoot = !rightFoot;
+                float3 float3_1 = (float3)__instance.root.transform.position.FlattenXZ();
+                double stepLength = (double)math.lengthsq(float3_1 - ___prevStepPosFlattened);
+                if ((stepLength <= 0.0)||(stepLength>3.0)) return;
+                double strideDist = (double)__instance.footStepStrideDist * (double)__instance.footStepStrideDist * 0.9;
+                if (stepLength > strideDist)
+                {
+                    tactsuitVr.LOG("FootSlide: " + math.lengthsq(float3_1 - ___prevStepPosFlattened).ToString() + " " + (__instance.footStepStrideDist * __instance.footStepStrideDist).ToString());
+                    tactsuitVr.FootStep(rightFoot);
+                    rightFoot = !rightFoot;
+                }
             }
         }
-        */
+
+
 
         [HarmonyPatch(typeof(JuiceVolume), "FlashSettings", new Type[] { typeof(JuiceVolume.JuiceLayerName), typeof(float), typeof(float), typeof(float) })]
         public class bhaptics_Prayer
@@ -281,7 +287,8 @@ namespace TheLightBrigade_bhaptics
                 if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport)
                 {
                     tactsuitVr.PlaybackHaptics("Teleport");
-                    footSteps = 0;
+                    tactsuitVr.FootStep(true);
+                    tactsuitVr.FootStep(false);
                 }
             }
         }

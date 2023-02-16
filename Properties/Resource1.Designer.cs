@@ -268,6 +268,24 @@ namespace TheLightBrigade_bhaptics.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;ReceiveAmmo_L&quot;,&quot;id&quot;:&quot;bPWOt6pLRr5QumoBqn72&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:204,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[]},&quot;pathMode&quot;:{&quot;feedback&quot;:[{&quot;movingPattern&quot;:&quot;CONST_SPEED&quot;,&quot;playbackType&quot;:&quot;FADE_IN&quot;,&quot;visible&quot;:true, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ReceiveAmmo_L {
+            get {
+                return ResourceManager.GetString("ReceiveAmmo_L", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;ReceiveAmmo_R&quot;,&quot;id&quot;:&quot;AmfofNIkx28rnPlbaNAW&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:204,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[]},&quot;pathMode&quot;:{&quot;feedback&quot;:[{&quot;movingPattern&quot;:&quot;CONST_SPEED&quot;,&quot;playbackType&quot;:&quot;FADE_IN&quot;,&quot;visible&quot;:true, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ReceiveAmmo_R {
+            get {
+                return ResourceManager.GetString("ReceiveAmmo_R", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;createdAt&quot;:1638092429694,&quot;description&quot;:&quot;&quot;,&quot;id&quot;:&quot;&quot;,&quot;layout&quot;:{&quot;layouts&quot;:{&quot;ForearmL&quot;:[{&quot;index&quot;:0,&quot;x&quot;:0,&quot;y&quot;:0},{&quot;index&quot;:1,&quot;x&quot;:0.5,&quot;y&quot;:0},{&quot;index&quot;:2,&quot;x&quot;:1,&quot;y&quot;:0},{&quot;index&quot;:3,&quot;x&quot;:0,&quot;y&quot;:1},{&quot;index&quot;:4,&quot;x&quot;:0.5,&quot;y&quot;:1},{&quot;index&quot;:5,&quot;x&quot;:1,&quot;y&quot;:1}],&quot;ForearmR&quot;:[{&quot;index&quot;:0,&quot;x&quot;:0,&quot;y&quot;:0},{&quot;index&quot;:1,&quot;x&quot;:0.5,&quot;y&quot;:0},{&quot;index&quot;:2,&quot;x&quot;:1,&quot;y&quot;:0},{&quot;index&quot;:3,&quot;x&quot;:0,&quot;y&quot;:1},{&quot;index&quot;:4,&quot;x&quot;:0.5,&quot;y&quot;:1},{&quot;index&quot;:5,&quot;x&quot;:1,&quot;y&quot;:1}]},&quot;name&quot;:&quot;Tactosy2&quot;,&quot;type&quot;:&quot;Tactosy2&quot;},&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;Recoil_L&quot;,&quot;t....
         /// </summary>
         internal static string RecoilArms_L {
@@ -408,6 +426,24 @@ namespace TheLightBrigade_bhaptics.Properties {
         internal static string SpellVest_R {
             get {
                 return ResourceManager.GetString("SpellVest_R", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;StoreAmmo_L&quot;,&quot;id&quot;:&quot;e8Cwhs5rfBqwBhM5rHX7&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:204,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[]},&quot;pathMode&quot;:{&quot;feedback&quot;:[{&quot;movingPattern&quot;:&quot;CONST_SPEED&quot;,&quot;playbackType&quot;:&quot;FADE_IN&quot;,&quot;visible&quot;:true,&quot;p [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StoreAmmo_L {
+            get {
+                return ResourceManager.GetString("StoreAmmo_L", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {&quot;project&quot;:{&quot;category&quot;:&quot;&quot;,&quot;tags&quot;:[],&quot;uploader&quot;:&quot;Oy8xq33fqbOwk4g7ojpt1pM5pbC2&quot;,&quot;mediaFileDuration&quot;:1,&quot;name&quot;:&quot;StoreAmmo_R&quot;,&quot;id&quot;:&quot;wFVumDez2eMo2eYvwuYY&quot;,&quot;media&quot;:{&quot;name&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;None&quot;,&quot;description&quot;:&quot;&quot;,&quot;link&quot;:&quot;&quot;,&quot;updateTime&quot;:0,&quot;duration&quot;:0},&quot;description&quot;:&quot;&quot;,&quot;tracks&quot;:[{&quot;enable&quot;:true,&quot;effects&quot;:[{&quot;name&quot;:&quot;Effect 1&quot;,&quot;offsetTime&quot;:204,&quot;startTime&quot;:0,&quot;modes&quot;:{&quot;VestFront&quot;:{&quot;dotMode&quot;:{&quot;dotConnected&quot;:false,&quot;feedback&quot;:[]},&quot;pathMode&quot;:{&quot;feedback&quot;:[{&quot;movingPattern&quot;:&quot;CONST_SPEED&quot;,&quot;playbackType&quot;:&quot;FADE_IN&quot;,&quot;visible&quot;:true,&quot;p [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StoreAmmo_R {
+            get {
+                return ResourceManager.GetString("StoreAmmo_R", resourceCulture);
             }
         }
         

@@ -10,7 +10,7 @@ using LB;
 using UnityEngine;
 using Unity.Mathematics;
 
-[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.4", "Florian Fahrenberger")]
+[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.5", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
 
 
@@ -21,6 +21,7 @@ namespace TheLightBrigade_bhaptics
         public static TactsuitVR tactsuitVr;
         public static bool rightFoot = true;
         public static float footSteps = 0;
+        public static bool rightHanded = true;
 
         public override void OnInitializeMelon()
         {
@@ -92,6 +93,11 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix(InventorySlot __instance)
             {
                 if (__instance.inventorySlotType == InventorySlotType.Rifle) tactsuitVr.PlaybackHaptics("RifleStore");
+                if (__instance.inventorySlotType == InventorySlotType.Ammo)
+                {
+                    if (rightHanded) tactsuitVr.PlaybackHaptics("StoreAmmo_L");
+                    else tactsuitVr.PlaybackHaptics("StoreAmmo_R");
+                }
             }
         }
 
@@ -102,9 +108,23 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix(InventorySlot __instance)
             {
                 if (__instance.inventorySlotType == InventorySlotType.Rifle) tactsuitVr.PlaybackHaptics("RifleReceive");
+                if (__instance.inventorySlotType == InventorySlotType.Ammo)
+                {
+                    if (rightHanded) tactsuitVr.PlaybackHaptics("ReceiveAmmo_L");
+                    else tactsuitVr.PlaybackHaptics("ReceiveAmmo_R");
+                }
             }
         }
 
+        [HarmonyPatch(typeof(InventoryRoot), "SetHandednessPoses", new Type[] { typeof(Handedness) })]
+        public class bhaptics_SetHandedness
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Handedness handedness)
+            {
+                rightHanded = (handedness == Handedness.Right);
+            }
+        }
         #endregion
 
         #region Damage and Health
@@ -191,6 +211,16 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix()
             {
                 tactsuitVr.StopThreads();
+            }
+        }
+
+        [HarmonyPatch(typeof(Consumable_Medkit), "OnConsumableApplyEffect", new Type[] { typeof(Actor) })]
+        public class bhaptics_PlayerMedKit
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                tactsuitVr.PlaybackHaptics("Healing");
             }
         }
 

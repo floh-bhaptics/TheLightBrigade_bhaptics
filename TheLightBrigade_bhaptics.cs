@@ -42,9 +42,11 @@ namespace TheLightBrigade_bhaptics
                 if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
-                //if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null) twoHanded = true;
+                if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null)
+                    if ((UnityEngine.Object)__instance.grabBarrel.gripController != (UnityEngine.Object)null)
+                        twoHanded = true;
                 //twoHanded = __instance.grabTrigger.alternateGrabAlso;
-                twoHanded = (__instance.grabBarrel != null);
+                //twoHanded = (__instance.grabBarrel != null);
                 tactsuitVr.GunRecoil(isRight, 1.0f, twoHanded);
             }
         }

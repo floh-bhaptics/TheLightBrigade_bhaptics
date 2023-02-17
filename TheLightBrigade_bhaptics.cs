@@ -21,6 +21,7 @@ namespace TheLightBrigade_bhaptics
         public static TactsuitVR tactsuitVr;
         public static bool rightFoot = true;
         public static bool rightHanded = true;
+        public static double lastFootStep = 0.0;
 
         public override void OnInitializeMelon()
         {
@@ -235,10 +236,12 @@ namespace TheLightBrigade_bhaptics
                 float3 float3_1 = (float3)__instance.root.transform.position.FlattenXZ();
                 double stepLength = (double)math.lengthsq(float3_1 - ___prevStepPosFlattened);
                 if ((stepLength <= 0.0)||(stepLength>3.0)) return;
+                if (stepLength == lastFootStep) return;
                 double strideDist = (double)__instance.footStepStrideDist * (double)__instance.footStepStrideDist * 0.9;
                 if (stepLength > strideDist)
                 {
                     tactsuitVr.LOG("FootSlide: " + math.lengthsq(float3_1 - ___prevStepPosFlattened).ToString() + " " + (__instance.footStepStrideDist * __instance.footStepStrideDist).ToString());
+                    lastFootStep = stepLength;
                     tactsuitVr.FootStep(rightFoot);
                     rightFoot = !rightFoot;
                 }

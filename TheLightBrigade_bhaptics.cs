@@ -129,12 +129,12 @@ namespace TheLightBrigade_bhaptics
 
         #region Damage and Health
 
-        private static (float, float) getAngleAndShift(Transform player, Vector3 hitPoint)
+        private static (float, float) getAngleAndShift(Transform player, Vector3 hitPoint, Quaternion headRotation)
         {
             Vector3 patternOrigin = new Vector3(0f, 0f, 1f);
             // y is "up", z is "forward" in local coordinates
             Vector3 hitPosition = hitPoint - player.position;
-            Quaternion PlayerRotation = player.rotation;
+            Quaternion PlayerRotation = player.rotation * headRotation;
             Vector3 playerDir = PlayerRotation.eulerAngles;
             // We only want rotation correction in y direction (left-right), top-bottom and yaw we can leave
             Vector3 flattenedHit = new Vector3(hitPosition.x, 0f, hitPosition.z);
@@ -165,7 +165,7 @@ namespace TheLightBrigade_bhaptics
             {
                 if (__instance.health <= Services.gameSettings.PlayerLowHealthRatio * __instance.maxHealth) tactsuitVr.StartHeartBeat();
                 else tactsuitVr.StopHeartBeat();
-                //Quaternion headRotation = __instance.headRotation();
+                Quaternion headRotation = __instance.headRotation();
                 float hitAngle;
                 float hitShift;
                 string damageType = "BulletHit";
@@ -175,7 +175,7 @@ namespace TheLightBrigade_bhaptics
                 if (info.damageData.isMelee) damageType = "BladeHit";
                 if (info.damageData.isPoison) damageType = "Poison";
                 if (info.damageData.isSpell) damageType = "Impact";
-                (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition);
+                (hitAngle, hitShift) = getAngleAndShift(__instance.transform, info.hitPosition, headRotation);
                 if (hitShift >= 0.5f) { tactsuitVr.HeadShot(hitAngle); return; }
                 tactsuitVr.PlayBackHit(damageType, hitAngle, hitShift);
             }

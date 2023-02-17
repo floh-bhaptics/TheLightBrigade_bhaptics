@@ -240,7 +240,7 @@ namespace TheLightBrigade_bhaptics
                 double strideDist = (double)__instance.footStepStrideDist * (double)__instance.footStepStrideDist * 0.9;
                 if (stepLength > strideDist)
                 {
-                    tactsuitVr.LOG("FootSlide: " + math.lengthsq(float3_1 - ___prevStepPosFlattened).ToString() + " " + (__instance.footStepStrideDist * __instance.footStepStrideDist).ToString());
+                    //tactsuitVr.LOG("FootSlide: " + math.lengthsq(float3_1 - ___prevStepPosFlattened).ToString() + " " + (__instance.footStepStrideDist * __instance.footStepStrideDist).ToString());
                     lastFootStep = stepLength;
                     tactsuitVr.FootStep(rightFoot);
                     rightFoot = !rightFoot;

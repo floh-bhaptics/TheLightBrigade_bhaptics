@@ -16,8 +16,6 @@ namespace MyBhapticsTactsuit
         public bool suitDisabled = true;
         public bool systemInitialized = false;
         private static ManualResetEvent HeartBeat_mrse = new ManualResetEvent(false);
-        private static ManualResetEvent Water_mrse = new ManualResetEvent(false);
-        private static ManualResetEvent Choking_mrse = new ManualResetEvent(false);
         public Dictionary<String, String> FeedbackMap = new Dictionary<String, String>();
 
         private static bHapticsLib.RotationOption defaultRotationOption = new bHapticsLib.RotationOption(0.0f, 0.0f);
@@ -32,26 +30,6 @@ namespace MyBhapticsTactsuit
             }
         }
 
-        public void WaterFunc()
-        {
-            while (true)
-            {
-                Water_mrse.WaitOne();
-                bHapticsLib.bHapticsManager.PlayRegistered("WaterSlushing");
-                Thread.Sleep(5050);
-            }
-        }
-
-        public void ChokingFunc()
-        {
-            while (true)
-            {
-                Choking_mrse.WaitOne();
-                bHapticsLib.bHapticsManager.PlayRegistered("Choking");
-                Thread.Sleep(1050);
-            }
-        }
-
         public TactsuitVR()
         {
             LOG("Initializing suit");
@@ -63,10 +41,6 @@ namespace MyBhapticsTactsuit
             LOG("Starting HeartBeat and NeckTingle thread...");
             Thread HeartBeatThread = new Thread(HeartBeatFunc);
             HeartBeatThread.Start();
-            Thread WaterThread = new Thread(WaterFunc);
-            WaterThread.Start();
-            Thread ChokingThread = new Thread(ChokingFunc);
-            ChokingThread.Start();
         }
 
         public void LOG(string logStr)
@@ -214,43 +188,6 @@ namespace MyBhapticsTactsuit
             bHapticsLib.bHapticsManager.PlayRegistered(keyVest, keyVest, scaleOption, rotationFront);
         }
 
-        public bool isMinigunPlaying()
-        {
-            if (IsPlaying("Minigun_L")) { return true; }
-            if (IsPlaying("Minigun_R")) { return true; }
-            if (IsPlaying("MinigunDual_L")) { return true; }
-            if (IsPlaying("MinigunDual_R")) { return true; }
-            return false;
-        }
-
-        public void FireMinigun(bool isRightHand, bool twoHanded)
-        {
-            if (isMinigunPlaying()) { return; }
-
-            string postfix = "";
-            if (twoHanded) { postfix += "Dual"; }
-            if (isRightHand) { postfix += "_R"; }
-            else { postfix += "_L"; }
-            string key = "Minigun" + postfix;
-            string keyVest = "MinigunVest" + postfix;
-            string keyHands = "RecoilHands" + postfix;
-            PlaybackHaptics(key);
-            PlaybackHaptics(keyVest);
-            PlaybackHaptics(keyHands);
-        }
-
-        public void StopMinigun(bool isRightHand, bool twoHanded)
-        {
-            string postfix = "";
-            if (twoHanded) { postfix += "Dual"; }
-            if (isRightHand) { postfix += "_R"; }
-            else { postfix += "_L"; }
-            string key = "Minigun" + postfix;
-            string keyVest = "MinigunVest" + postfix;
-            StopHapticFeedback(key);
-            StopHapticFeedback(keyVest);
-        }
-
         public void HeadShot(float hitAngle)
         {
             if (bHapticsLib.bHapticsManager.IsDeviceConnected(bHapticsLib.PositionID.Head))
@@ -282,27 +219,6 @@ namespace MyBhapticsTactsuit
             HeartBeat_mrse.Reset();
         }
 
-        public void StartWater()
-        {
-            Water_mrse.Set();
-        }
-
-        public void StopWater()
-        {
-            Water_mrse.Reset();
-        }
-
-        public void StartChoking()
-        {
-            Choking_mrse.Set();
-        }
-
-        public void StopChoking()
-        {
-            Choking_mrse.Reset();
-            StopHapticFeedback("TeleportOpened");
-        }
-
         public bool IsPlaying(String effect)
         {
             return bHapticsLib.bHapticsManager.IsPlaying(effect);
@@ -325,8 +241,6 @@ namespace MyBhapticsTactsuit
         public void StopThreads()
         {
             StopHeartBeat();
-            StopWater();
-            StopChoking();
         }
 
 

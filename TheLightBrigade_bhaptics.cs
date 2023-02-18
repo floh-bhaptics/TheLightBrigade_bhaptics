@@ -9,6 +9,7 @@ using MyBhapticsTactsuit;
 using LB;
 using UnityEngine;
 using Unity.Mathematics;
+using System.Diagnostics;
 
 [assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "1.0.6", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
@@ -22,6 +23,7 @@ namespace TheLightBrigade_bhaptics
         public static bool rightFoot = true;
         public static bool rightHanded = true;
         public static double lastFootStep = 0.0;
+        public static Stopwatch footStepTimer = new Stopwatch();
 
         public override void OnInitializeMelon()
         {
@@ -237,13 +239,16 @@ namespace TheLightBrigade_bhaptics
                 double stepLength = (double)math.lengthsq(float3_1 - ___prevStepPosFlattened);
                 if ((stepLength <= 0.0)||(stepLength>3.0)) return;
                 if (stepLength == lastFootStep) return;
-                double strideDist = (double)__instance.footStepStrideDist * (double)__instance.footStepStrideDist * 0.9;
+                double strideDist = (double)__instance.footStepStrideDist * (double)__instance.footStepStrideDist * 0.93;
                 if (stepLength > strideDist)
                 {
                     //tactsuitVr.LOG("FootSlide: " + math.lengthsq(float3_1 - ___prevStepPosFlattened).ToString() + " " + (__instance.footStepStrideDist * __instance.footStepStrideDist).ToString());
                     lastFootStep = stepLength;
+                    if (!footStepTimer.IsRunning) footStepTimer.Start();
+                    else if (footStepTimer.ElapsedMilliseconds < 200) return;
                     tactsuitVr.FootStep(rightFoot);
                     rightFoot = !rightFoot;
+                    footStepTimer.Restart();
                 }
             }
         }

@@ -35,9 +35,9 @@
       <HintPath>F:\SteamLibrary\steamapps\common\The Light Brigade\MelonLoader\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="bHapticsLib">
-      <HintPath>F:\SteamLibrary\steamapps\common\The Light Brigade\MelonLoader\bHapticsLib.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Bhaptics.Tact.dev, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Bhaptics.Tact.dev.dll</HintPath>
     </Reference>
     <Reference Include="LB">
       <HintPath>F:\SteamLibrary\steamapps\common\The Light Brigade\LightBrigade_Data\Managed\LB.dll</HintPath>
@@ -136,6 +136,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(SolutionDir)bHaptics" "$(TargetDir)\bHaptics\" /S /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(SolutionDir)bHaptics" "$(TargetDir)\bHaptics\" /S /Y
+XCOPY "$(SolutionDir)bhaptics_library.dev.dll" "$(TargetDir)\bhaptics_library.dev.dll" /S /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -35,7 +35,7 @@ namespace MyBhapticsTactsuit
         {
             LOG("Initializing suit");
             // TODO need to check if this works
-            string configPath = Directory.GetCurrentDirectory() + "\\Mods\\bhaptics_library.dll";
+            string configPath = Directory.GetCurrentDirectory() + "\\Mods\\bhaptics_library.dev.dll";
             NativeLibrary.Load(configPath);
             var res = BhapticsSDK2.Initialize("EbZ73nerOmcM3AOVoyr2", "Df9MuZU0Q9x2VEh27MwU");
 

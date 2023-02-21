@@ -24,6 +24,7 @@ namespace TheLightBrigade_bhaptics
         public static bool rightHanded = true;
         public static double lastFootStep = 0.0;
         public static Stopwatch footStepTimer = new Stopwatch();
+        public static Unity.Mathematics.Random myRandom = new Unity.Mathematics.Random();
 
         public override void OnInitializeMelon()
         {
@@ -165,7 +166,8 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPostfix]
             public static void Postfix(PlayerActor __instance, ProjectileHitInfo info, ProjectileService.DamageResult damageResult)
             {
-                if (__instance.health <= Services.gameSettings.PlayerLowHealthRatio * __instance.maxHealth) tactsuitVr.StartHeartBeat();
+                if (__instance.health <= 0) tactsuitVr.StopHeartBeat();
+                else if (__instance.health <= Services.gameSettings.PlayerLowHealthRatio * __instance.maxHealth) tactsuitVr.StartHeartBeat();
                 else tactsuitVr.StopHeartBeat();
                 Quaternion headRotation = __instance.headRotation();
                 float hitAngle;
@@ -196,6 +198,16 @@ namespace TheLightBrigade_bhaptics
 
         [HarmonyPatch(typeof(PlayerActor), "DoDeath", new Type[] { typeof(DeathEntry) })]
         public class bhaptics_PlayerDeath
+        {
+            [HarmonyPrefix]
+            public static void Prefix()
+            {
+                tactsuitVr.StopThreads();
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerActor), "OnDestroy", new Type[] {  })]
+        public class bhaptics_PlayerDestroy
         {
             [HarmonyPostfix]
             public static void Postfix()
@@ -262,7 +274,7 @@ namespace TheLightBrigade_bhaptics
             public static void Postfix(JuiceVolume __instance, JuiceVolume.JuiceLayerName layerName, float fadeInSecs, float holdDurationSecs, float fadeOutSecs)
             {
                 if (layerName == JuiceVolume.JuiceLayerName.PlayerTeleport) tactsuitVr.PlaybackHaptics("Teleport");
-                if (layerName == JuiceVolume.JuiceLayerName.AbsorbSoul) tactsuitVr.PlaybackHaptics("AbsorbSoul");
+                if (layerName == JuiceVolume.JuiceLayerName.AbsorbSoul) tactsuitVr.PlayBackHit("AbsorbSoul", myRandom.NextFloat(0f, 360f), myRandom.NextFloat(-0.4f, 0.4f));
                 if (layerName == JuiceVolume.JuiceLayerName.LevelUp) tactsuitVr.PlaybackHaptics("LevelUp");
                 if (layerName == JuiceVolume.JuiceLayerName.AbsorbTarotCard) tactsuitVr.PlaybackHaptics("AbsorbTarotCard");
                 if (layerName == JuiceVolume.JuiceLayerName.Prayer)

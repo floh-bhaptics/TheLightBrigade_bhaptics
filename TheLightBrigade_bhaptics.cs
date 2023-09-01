@@ -38,12 +38,15 @@ namespace TheLightBrigade_bhaptics
         public class bhaptics_RifleFire
         {
             [HarmonyPrefix]
-            public static void Prefix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState)
+            public static void Prefix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState, bool ___actionOpenState)
             {
                 if (___boltOpenState) { return; }
-                if (__instance.TypeOfWeapon != WeaponType.Pistol)
+                if (((__instance.TypeOfWeapon != WeaponType.Pistol) && !(__instance.name.Contains("MP35")) && !(__instance.name.Contains("Winchester_1897"))))
                     if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { return; }
-                if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { return; }
+                if ((__instance.name.Contains("MP35")) || (__instance.name.Contains("Winchester_1897")) )
+                    if ((UnityEngine.Object)__instance.nodeAction != (UnityEngine.Object)null && !___actionOpenState) { return; }
+                if (!(__instance.name.Contains("MP35")))
+                    if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
                 if ((UnityEngine.Object)__instance.grabBarrel != (UnityEngine.Object)null)

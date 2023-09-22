@@ -11,7 +11,7 @@ using UnityEngine;
 using Unity.Mathematics;
 using System.Diagnostics;
 
-[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "2.1.0", "Florian Fahrenberger")]
+[assembly: MelonInfo(typeof(TheLightBrigade_bhaptics.TheLightBrigade_bhaptics), "TheLightBrigade_bhaptics", "2.1.1", "Florian Fahrenberger")]
 [assembly: MelonGame("Funktronic Labs", "The Light Brigade")]
 
 
@@ -40,12 +40,15 @@ namespace TheLightBrigade_bhaptics
             [HarmonyPrefix]
             public static void Prefix(Weapon_Rifle __instance, bool ___boltOpenState, float ___nextShot, bool ___hammerOpenState, bool ___actionOpenState)
             {
-                if (___boltOpenState) { return; }
+                //tactsuitVr.LOG("Weapon: " + __instance.name);
+                //tactsuitVr.LOG("Hammer open: " + ___hammerOpenState + " Action open: " + ___actionOpenState + " Bolt open: " + ___boltOpenState);
+                if (__instance.name.Contains("M3")) if (!(___boltOpenState)) return;
+                if ((___boltOpenState)) if (!(__instance.name.Contains("M3"))) return;
                 if (((__instance.TypeOfWeapon != WeaponType.Pistol) && !(__instance.name.Contains("MP35")) && !(__instance.name.Contains("Winchester_1897"))))
                     if ((UnityEngine.Object)__instance.nodeHammer != (UnityEngine.Object)null && ___hammerOpenState) { return; }
-                if ((__instance.name.Contains("MP35")) || (__instance.name.Contains("Winchester_1897")) )
+                if ((__instance.name.Contains("MP35")) || (__instance.name.Contains("Winchester_1897")))
                     if ((UnityEngine.Object)__instance.nodeAction != (UnityEngine.Object)null && !___actionOpenState) { return; }
-                if (!(__instance.name.Contains("MP35")))
+                if (!(__instance.name.Contains("MP35")) && !(__instance.name.Contains("M3")))
                     if ((BaseConfig)__instance.chamber == (BaseConfig)null || __instance.chamberSpent) { return; }
                 bool isRight = __instance.grabTrigger.gripController.IsRightController();
                 bool twoHanded = false;
